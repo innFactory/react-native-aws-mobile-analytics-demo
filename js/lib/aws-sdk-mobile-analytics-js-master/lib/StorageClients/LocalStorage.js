@@ -1,14 +1,17 @@
 /*
-  Copyright 2014-2015 Amazon.com, Inc. or its affiliates. All Rights Reserved.
-  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance with
-  the License. A copy of the License is located at http://aws.amazon.com/apache2.0/
-  or in the "license" file accompanying this file. This file is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
-  CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions
-  and limitations under the License.
-*/
+ Copyright 2014-2015 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance with
+ the License. A copy of the License is located at http://aws.amazon.com/apache2.0/
+ or in the "license" file accompanying this file. This file is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+ CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions
+ and limitations under the License.
+ */
 
 var AMA = global.AMA;
 AMA.Util = require('../MobileAnalyticsUtilities.js');
+import {
+    AsyncStorage
+} from "react-native";
 
 AMA.Storage = (function () {
     'use strict';
@@ -64,7 +67,7 @@ AMA.Storage = (function () {
         if (this.supportsLocalStorage()) {
             try {
                 this.logger.log('[Function:(AWS.MobileAnalyticsClient.Storage).saveToLocalStorage]');
-                window.localStorage.setItem(this.storageKey, JSON.stringify(this.cache));
+                AsyncStorage.setItem(this.storageKey, JSON.stringify(this.cache));
                 this.logger.log('LocalStorage Cache: ' + JSON.stringify(this.cache));
             } catch (saveToLocalStorageError) {
                 this.logger.log('Error saving to LocalStorage: ' + JSON.stringify(saveToLocalStorageError));
@@ -78,7 +81,7 @@ AMA.Storage = (function () {
             var storedCache;
             try {
                 this.logger.log('[Function:(AWS.MobileAnalyticsClient.Storage).loadLocalStorage]');
-                storedCache = window.localStorage.getItem(this.storageKey);
+                storedCache = AsyncStorage.getItem(this.storageKey);
                 this.logger.log('LocalStorage Cache: ' + storedCache);
                 if (storedCache) {
                     //Try to parse, if corrupt delete
@@ -102,7 +105,7 @@ AMA.Storage = (function () {
     };
     LocalStorageClient.prototype.supportsLocalStorage = function supportsLocalStorage() {
         try {
-            return window && window.localStorage;
+            return AsyncStorage && true;
         } catch (supportsLocalStorageError) {
             return false;
         }
@@ -112,7 +115,7 @@ AMA.Storage = (function () {
         if (this.supportsLocalStorage()) {
             try {
                 this.logger.log('[Function:(AWS.MobileAnalyticsClient.Storage).clearLocalStorage]');
-                window.localStorage.removeItem(this.storageKey);
+                AsyncStorage.removeItem(this.storageKey);
                 //Clear Cache
                 global[this.storageKey] = {};
             } catch (clearLocalStorageError) {
