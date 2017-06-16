@@ -10,6 +10,14 @@ Uses:
 [aws-sdk-js](https://github.com/aws/aws-sdk-js)
 
 <br /><br />
+
+## Roadmap
+Currently (2017-06-16) I'm working on a implementation of the analytics sdk for react-native with support for AsyncStore.
+I will publish it soon as npm package.
+It will also provide the correct metric "Daily Active Users". In this example app misleadingly all sessions will be count as DAU.
+
+
+<br /><br />
 ## How to
 
 ### 1. Download [aws-sdk-mobile-analytics-js](https://github.com/aws/aws-sdk-mobile-analytics-js)
